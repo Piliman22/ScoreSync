@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  scoresync:
+    image: pim4n/scoresync:latest
+    ports:
+      - "3939:3939"
+    volumes:
+      - ./levels:/app/levels
+    restart: unless-stopped
