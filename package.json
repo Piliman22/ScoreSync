@@ -33,11 +33,13 @@
     "express": "^4.21.2",
     "morgan": "^1.10.0",
     "typescript": "^5.8.3",
-    "usctool": "^0.4.1"
+    "usctool": "^0.4.1",
+    "yargs": "^18.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/morgan": "^1.9.9",
+    "@types/yargs": "^17.0.33",
     "caxa": "^3.0.1",
     "nexe": "^5.0.0-beta.4",
     "pkg": "^5.8.1",

@@ -4,12 +4,23 @@ import { getLocalIpv4, getfile } from "./utils.js";
 import { install } from "./sonolus.js";
 import { packPath } from "@sonolus/free-pack";
 import { initializeCharts } from "./charts.js";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 
 const app = express();
 export const sonolus = new Sonolus()
 
+const argv = yargs(hideBin(process.argv))
+    .option("port", {
+        type: "number",
+        description: "サーバーの起動ポート",
+        default: 3939,
+    })
+    .help()
+    .parseSync() as { port: number; [key: string]: unknown; };
+
 const ipAddresses = getLocalIpv4();
-const port = 3939;
+const port = argv.port;
 const chartDirectory = './levels'; 
 app.use(sonolus.router)
 
