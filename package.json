@@ -27,8 +27,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@sonolus/core": "^7.14.2",
-    "@sonolus/express": "^7.4.0",
+    "@sonolus/core": "^7.15.0",
+    "@sonolus/express": "^7.5.0",
     "@sonolus/free-pack": "^1.2.0",
     "express": "^4.21.2",
     "morgan": "^1.10.0",
