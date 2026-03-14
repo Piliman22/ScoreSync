@@ -1,0 +1,9 @@
+node_modules
+dist
+release
+release-bundle
+dist-exe
+.git
+.github
+*.log
+*.md

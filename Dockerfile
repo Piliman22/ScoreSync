@@ -1,28 +1,27 @@
-FROM node:18 AS builder
-
+FROM node:20-bookworm-slim AS build
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package*.json ./
+RUN npm ci
 
-COPY . .
-
+COPY tsconfig.json ./
+COPY src ./src
+COPY lib ./lib
 RUN npm run build
 
-# --- runtime stage ---
-# --- runtime stage ---
-FROM node:18-slim AS runtime
-
+FROM node:20-bookworm-slim AS runtime
 WORKDIR /app
+
 ENV NODE_ENV=production
+ENV PORT=3939
 
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/lib ./lib
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/package-lock.json ./package-lock.json
+COPY package*.json ./
+RUN npm ci --omit=dev
 
-RUN npm install --omit=dev
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/lib ./lib
+RUN mkdir -p /app/levels
 
 EXPOSE 3939
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/index.js", "--port", "3939"]

@@ -1,8 +1,10 @@
-version: '3.8'
-
 services:
   scoresync:
-    image: pim4n/scoresync:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-piliman22}/scoresync:local
+    container_name: scoresync
     ports:
       - "3939:3939"
     volumes:
