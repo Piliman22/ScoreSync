@@ -1,0 +1,61 @@
+name: Release Windows Binary
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Windows executable
+        run: npm run build:caxa
+
+      - name: Prepare release bundle
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $bundleDir = "release-bundle"
+          $outputZip = "scoresync.zip"
+
+          if (Test-Path $bundleDir) { Remove-Item -Recurse -Force $bundleDir }
+          if (Test-Path $outputZip) { Remove-Item -Force $outputZip }
+
+          New-Item -ItemType Directory -Path $bundleDir | Out-Null
+
+          Copy-Item -Path "release/scoresync.exe" -Destination "$bundleDir/scoresync.exe"
+          Copy-Item -Path "lib" -Destination "$bundleDir/lib" -Recurse
+          New-Item -ItemType Directory -Path "$bundleDir/levels" | Out-Null
+
+          Compress-Archive -Path "$bundleDir/*" -DestinationPath $outputZip
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scoresync-windows
+          path: scoresync.zip
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: scoresync.zip

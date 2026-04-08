@@ -27,8 +27,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@next-sekai/sonolus-next-sekai-engine": "^1.7.5",
-    "@sonolus/core": "^7.15.1",
+    "@sonolus/core": "^7.14.2",
     "@sonolus/express": "^7.4.0",
     "@sonolus/free-pack": "^1.2.0",
     "express": "^4.21.2",
